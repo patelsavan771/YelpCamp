@@ -2,41 +2,87 @@
 <div class="row">
   <h2 class="text-center">Edit CampGround</h2>
   <div class="col-6 offset-3">
-  <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST">
+    <form
+      action="/campgrounds/<%= campground._id %>?_method=PUT"
+      method="POST"
+      class="needs-validation"
+      novalidate
+    >
+      <div class="mb-3">
+        <label for="title" class="form-label">Title : </label>
+        <input
+          type="text"
+          name="campground[title]"
+          id="title"
+          class="form-control"
+          value="<%= campground.title %>"
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
+      </div>
 
-    <div class="mb-3">
-      <label for="title" class="form-label">Title : </label>
-      <input type="text" name="campground[title]" id="title" class="form-control" value="<%= campground.title %>"/>
-    </div>
-    
-    <div class="mb-3">
-      <label for="location" class="form-label">Location : </label>
-      <input type="text" name="campground[location]" id="location" class="form-control" value="<%= campground.location %>"/>
-    </div>
+      <div class="mb-3">
+        <label for="location" class="form-label">Location : </label>
+        <input
+          type="text"
+          name="campground[location]"
+          id="location"
+          class="form-control"
+          value="<%= campground.location %>"
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
+      </div>
 
-    <div class="mb-3">
-      <label for="price" class="form-label">Price : </label>
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="price">$</span>
-        <input type="text" id="price" name="campground[price]" class="form-control" placeholder="0.00" aria-describedby="basic-addon1" value="<%= campground.price %>">
-      </div>      
-    </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Price : </label>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="price">$</span>
+          <input
+            type="text"
+            id="price"
+            name="campground[price]"
+            class="form-control"
+            placeholder="0.00"
+            aria-describedby="basic-addon1"
+            value="<%= campground.price %>"
+            required
+          />
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+      </div>
 
-    <div class="mb-3">
-      <label for="image" class="form-label">Image URL : </label>
-      <input type="text" name="campground[image]" id="image" class="form-control" value="<%= campground.image %>"/>
-    </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Image URL : </label>
+        <input
+          type="text"
+          name="campground[image]"
+          id="image"
+          class="form-control"
+          value="<%= campground.image %>"
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
+      </div>
 
-    <div class="mb-3">
-      <label for="description" class="form-label">description : </label>
-      <textarea name="campground[description]" id="description" class="form-control"><%= campground.description %></textarea>
-    </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">description : </label>
+        <textarea
+          name="campground[description]"
+          id="description"
+          class="form-control"
+          required
+        >
+<%= campground.description %></textarea
+        >
+        <div class="valid-feedback">Looks good!</div>
+      </div>
 
-    <div class="mb-3">
-      <button class="btn btn-success">Update CampGround</button>
-    </div>
-  </form>
-  
-  <a href="/campgrounds/<%= campground._id %>">Back to campground</a>
-</div>
+      <div class="mb-3">
+        <button class="btn btn-success">Update CampGround</button>
+      </div>
+    </form>
+
+    <a href="/campgrounds/<%= campground._id %>">Back to campground</a>
+  </div>
 </div>
