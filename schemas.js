@@ -1,3 +1,5 @@
+//Joi schemas to validate user input before perform db operations
+
 const Joi = require('joi');
 module.exports.campgroundSchema = Joi.object({
     campground: Joi.object({
