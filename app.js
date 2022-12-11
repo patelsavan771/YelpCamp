@@ -6,8 +6,12 @@ const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError');
 const campgroundsRoute = require('./routes/campgrounds');
 const reviewsRoute = require('./routes/reviews');
+const usersRoute = require('./routes/users');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStratagy = require('passport-local');
+const User = require('./models/user');
 //const Joi = require('joi');
 //const morgan = require('morgan'); //used for logs
 
@@ -42,16 +46,32 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStratagy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
+    // console.log(req.session);
+    res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');;
     res.locals.error = req.flash('error');
     next();
-})
+});
 
+app.get('/fakeuser', async (req, res) => {
+    const user = new User({email: 'savan@gmail.com', username: 'sp'});
+    const newUser = await User.register(user, 'asdf');
+    res.send(newUser);
+});
+
+app.use('/', usersRoute);
 app.use('/campgrounds', campgroundsRoute);
 app.use('/campgrounds/:id/reviews', reviewsRoute);
 
