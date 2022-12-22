@@ -4,7 +4,7 @@
 <div class="row row-cols-1 row-cols-md-4 g-4">
   <% for(let campground of campgrounds) {%>
     <div class="card">
-      <img src="<%= campground.image %>" class="card-img-top" alt="campground image">
+      <img src="<%= campground.images[0].url %>" class="card-img-top" alt="campground image">
       <div class="card-body">
         <h5 class="card-title"><%= campground.title %></h5>
         <p class="card-text mb-1"><%= campground.description %></p>

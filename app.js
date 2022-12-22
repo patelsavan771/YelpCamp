@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+// console.log(process.env.CLOUDINARY_KEY);
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -66,7 +70,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/fakeuser', async (req, res) => {
-    const user = new User({email: 'savan@gmail.com', username: 'sp'});
+    const user = new User({ email: 'savan@gmail.com', username: 'sp' });
     const newUser = await User.register(user, 'asdf');
     res.send(newUser);
 });
