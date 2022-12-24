@@ -18,6 +18,17 @@ ImageSchema.virtual('cardImage').get(function() {
 const CampgroundSchema = new Schema({
     title: String,
     price: Number,
+    geometry: {
+        coordinates: {
+            type: [Number],
+            required: true
+        },
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        }
+    },
     description: String,
     location: String,
     images: [ImageSchema],
