@@ -18,11 +18,13 @@ const LocalStratagy = require('passport-local');
 const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const MongoStore = require('connect-mongo');
 //const Joi = require('joi');
 //const morgan = require('morgan'); //used for logs
 
 //connect to mongoose:
-mongoose.connect('mongodb://localhost:27017/yelpcamp')
+const dbUrl = process.env.DB_URL; // mongodb://localhost:27017/yelpcamp
+mongoose.connect(dbUrl)
     .then(() => {
         console.log("connected to mongoDB.");
     })
@@ -38,24 +40,39 @@ app.set('views', path.join(__dirname, '/views'));
 
 // morgan is middleware to log info of incomming requests:
 // app.use(morgan('tiny'));
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret
+    }
+});
+
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e)
+})
 
 const sessionConfig = {
-    secret: 'changeinproduction',
+    store,
+    name: 'session',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
-        name: 'session',  //default cookie name is connect.sid, for storing sesssion ID
         httpOnly: true,
-        // secure: true,   // only work with cookies on HTTPS, on localhost it will get break
+        // secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
 
-// mongoSanitize : to prevent from mongo injection attack
-app.use(mongoSanitize({ replaceWith: '_' }));
 app.use(session(sessionConfig));
 app.use(flash());
+
+// mongoSanitize : to prevent from mongo injection attack
+app.use(mongoSanitize({ replaceWith: '_' }));
 
 // app.use(
 //     helmet({
